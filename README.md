@@ -3,13 +3,14 @@
 This repo contains the open source scripts for packaging
 [Docker CE products](https://store.docker.com/search?offering=community&q=&type=edition).
 
-This repository is solely maintained by Docker, Inc.
+This repository is NOT maintained.
 
 The scripts will build for this list of packages types:
 
 * DEB packages for Ubuntu 17.10 Artful
 * DEB packages for Ubuntu 16.04 Xenial
 * DEB packages for Ubuntu 14.04 Trusty
+* DEB packages for Ubuntu 12.04 Precise
 * DEB packages for Debian 10 Buster
 * DEB packages for Debian 9 Stretch
 * DEB packages for Debian 8 Jessie

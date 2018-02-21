@@ -21,7 +21,7 @@ clean: ## remove build artifacts
 deb: ubuntu debian raspbian ## build all deb packages
 
 .PHONY: ubuntu
-ubuntu: ubuntu-xenial ubuntu-trusty ## build all ubuntu deb packages
+ubuntu: ubuntu-xenial ubuntu-trusty ubuntu-precise ## build all ubuntu deb packages
 
 .PHONY: debian
 debian: debian-stretch debian-wheezy debian-jessie ## build all debian deb packages
@@ -45,6 +45,20 @@ ubuntu-xenial: ## build ubuntu xenial deb packages
 
 .PHONY: ubuntu-trusty
 ubuntu-trusty: ## build ubuntu trusty deb packages
+	docker build -t debbuild-$@/$(ARCH) -f $(CURDIR)/$@/Dockerfile.$(ARCH) .
+	docker run --rm -i \
+		-e DEB_VERSION=$(DEB_VERSION) \
+		-e VERSION=$(VERSION) \
+		-e DOCKER_GITCOMMIT=$(GITCOMMIT) \
+		-v $(CURDIR)/debbuild/$@:/build \
+		-v $(ENGINE_DIR):/engine \
+		-v $(CLI_DIR):/cli \
+		-v $(CURDIR)/systemd:/root/build-deb/systemd \
+		debbuild-$@/$(ARCH)
+	$(CHOWN) -R $(shell id -u):$(shell id -g) debbuild/$@
+
+.PHONY: ubuntu-precise
+ubuntu-precise: ## build ubuntu precise deb packages
 	docker build -t debbuild-$@/$(ARCH) -f $(CURDIR)/$@/Dockerfile.$(ARCH) .
 	docker run --rm -i \
 		-e DEB_VERSION=$(DEB_VERSION) \
